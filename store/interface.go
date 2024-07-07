@@ -2,10 +2,12 @@ package store
 
 import "github.com/ssshekhu53/user-detail-management/models"
 
+//go:generate mockgen -source=interface.go -destination=mock_interface.go -package=store
+
 type User interface {
-	Create(*models.UserRequest) int
+	Create(user *models.User) int
 	Get(filters *models.Filters) []models.User
-	GetByID(int) (*models.User, error)
-	Update(request *models.UserUpdateRequest)
-	Delete(int)
+	GetByID(id int) (*models.User, error)
+	Update(user *models.User)
+	Delete(id int)
 }

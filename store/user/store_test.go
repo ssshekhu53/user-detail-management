@@ -10,31 +10,31 @@ import (
 	"github.com/ssshekhu53/user-detail-management/utils"
 )
 
-func TestCreate(t *testing.T) {
+func Test_Create(t *testing.T) {
 	u := New().(*user)
 
-	userReq := &models.UserRequest{
-		FName:   utils.StrPtr("John"),
-		City:    utils.StrPtr("New York"),
-		Phone:   utils.StrPtr("1234567890"),
-		Height:  utils.Float64Ptr(5.9),
-		Married: utils.BoolPtr(false),
+	userReq := &models.User{
+		Fname:   "John",
+		City:    "New York",
+		Phone:   "1234567890",
+		Height:  5.9,
+		Married: false,
 	}
 
 	id := u.Create(userReq)
 
 	assert.Equal(t, int(1), id)
-	assert.Equal(t, u.users[id].FName, *userReq.FName)
-	assert.Equal(t, u.users[id].City, *userReq.City)
-	assert.Equal(t, u.users[id].Phone, *userReq.Phone)
-	assert.Equal(t, u.users[id].Height, *userReq.Height)
-	assert.Equal(t, u.users[id].Married, *userReq.Married)
+	assert.Equal(t, u.users[id].Fname, userReq.Fname)
+	assert.Equal(t, u.users[id].City, userReq.City)
+	assert.Equal(t, u.users[id].Phone, userReq.Phone)
+	assert.Equal(t, u.users[id].Height, userReq.Height)
+	assert.Equal(t, u.users[id].Married, userReq.Married)
 }
 
-func TestGet(t *testing.T) {
+func Test_Get(t *testing.T) {
 	u := New().(*user)
-	userReq1 := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
-	userReq2 := &models.UserRequest{FName: utils.StrPtr("Jane"), City: utils.StrPtr("San Francisco"), Phone: utils.StrPtr("0987654321"), Height: utils.Float64Ptr(5.5), Married: utils.BoolPtr(true)}
+	userReq1 := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
+	userReq2 := &models.User{Fname: "Jane", City: "San Francisco", Phone: "0987654321", Height: 5.5, Married: true}
 
 	u.Create(userReq1)
 	u.Create(userReq2)
@@ -58,9 +58,9 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestGetByID(t *testing.T) {
+func Test_GetByID(t *testing.T) {
 	u := New().(*user)
-	userReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
+	userReq := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
 	id := u.Create(userReq)
 
 	usr, err := u.GetByID(id)
@@ -73,14 +73,14 @@ func TestGetByID(t *testing.T) {
 	assert.IsType(t, errors.UserNotFound{}, err)
 }
 
-func TestUpdate(t *testing.T) {
+func Test_Update(t *testing.T) {
 	u := New().(*user)
-	usrCreateReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
+	usrCreateReq := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
 	id := u.Create(usrCreateReq)
 
-	usrUpdateReq := &models.UserUpdateRequest{ID: utils.IntPtr(id), FName: utils.StrPtr("Johnny"), City: utils.StrPtr("Los Angeles"), Phone: utils.StrPtr("0987654321"), Height: utils.Float64Ptr(6.0), Married: utils.BoolPtr(true)}
+	usrUpdateReq := &models.User{ID: id, Fname: "Johnny", City: "Los Angeles", Phone: "0987654321", Height: 6.0, Married: true}
 
-	updatedUser := &models.User{ID: id, FName: "Johnny", City: "Los Angeles", Phone: "0987654321", Height: 6.0, Married: true}
+	updatedUser := &models.User{ID: id, Fname: "Johnny", City: "Los Angeles", Phone: "0987654321", Height: 6.0, Married: true}
 	u.Update(usrUpdateReq)
 
 	usr := u.users[id]
@@ -88,9 +88,9 @@ func TestUpdate(t *testing.T) {
 	assert.Equal(t, *updatedUser, usr)
 }
 
-func TestDelete(t *testing.T) {
+func Test_Delete(t *testing.T) {
 	u := New().(*user)
-	userReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
+	userReq := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
 	id := u.Create(userReq)
 
 	u.Delete(id)
@@ -101,17 +101,17 @@ func TestDelete(t *testing.T) {
 	assert.False(t, ok)
 }
 
-func TestIsMatch(t *testing.T) {
+func Test_isMatch(t *testing.T) {
 	u := New().(*user)
-	usr := &models.User{ID: 1, FName: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
+	usr := &models.User{ID: 1, Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
 
 	tests := []struct {
 		name    string
 		filters *models.Filters
 		want    bool
 	}{
-		{"Match by FName", &models.Filters{Fname: utils.StrPtr("John")}, true},
-		{"Mismatch by FName", &models.Filters{Fname: utils.StrPtr("Jane")}, false},
+		{"Match by Fname", &models.Filters{Fname: utils.StrPtr("John")}, true},
+		{"Mismatch by Fname", &models.Filters{Fname: utils.StrPtr("Jane")}, false},
 		{"Match by City", &models.Filters{City: utils.StrPtr("New York")}, true},
 		{"Mismatch by City", &models.Filters{City: utils.StrPtr("San Francisco")}, false},
 		{"Match by Height", &models.Filters{Height: utils.Float64Ptr(5.9)}, true},

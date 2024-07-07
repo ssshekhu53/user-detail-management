@@ -22,17 +22,12 @@ func New() store.User {
 	return u
 }
 
-func (u *user) Create(userReq *models.UserRequest) int {
+func (u *user) Create(userReq *models.User) int {
 	u.lastInsertedID += 1
 
-	u.users[u.lastInsertedID] = models.User{
-		ID:      u.lastInsertedID,
-		FName:   *userReq.FName,
-		City:    *userReq.City,
-		Phone:   *userReq.Phone,
-		Height:  *userReq.Height,
-		Married: *userReq.Married,
-	}
+	userReq.ID = u.lastInsertedID
+
+	u.users[u.lastInsertedID] = *userReq
 
 	return u.lastInsertedID
 }
@@ -61,15 +56,8 @@ func (u *user) GetByID(id int) (*models.User, error) {
 	return nil, errors.UserNotFound{ID: id}
 }
 
-func (u *user) Update(usr *models.UserUpdateRequest) {
-	u.users[*usr.ID] = models.User{
-		ID:      *usr.ID,
-		FName:   *usr.FName,
-		City:    *usr.City,
-		Phone:   *usr.Phone,
-		Height:  *usr.Height,
-		Married: *usr.Married,
-	}
+func (u *user) Update(usr *models.User) {
+	u.users[usr.ID] = *usr
 }
 
 func (u *user) Delete(id int) {
@@ -77,7 +65,7 @@ func (u *user) Delete(id int) {
 }
 
 func (u *user) isMatch(usr *models.User, filters *models.Filters) bool {
-	if filters.Fname != nil && !strings.EqualFold(usr.FName, *filters.Fname) {
+	if filters.Fname != nil && !strings.EqualFold(usr.Fname, *filters.Fname) {
 		return false
 	}
 

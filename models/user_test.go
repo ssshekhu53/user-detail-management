@@ -9,7 +9,7 @@ import (
 	"github.com/ssshekhu53/user-detail-management/utils"
 )
 
-func TestUserRequestValidateMissingParam(t *testing.T) {
+func Test_UserRequestValidateMissingParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserRequest
@@ -18,7 +18,7 @@ func TestUserRequestValidateMissingParam(t *testing.T) {
 		{
 			name: "All fields present",
 			request: UserRequest{
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(5.9),
@@ -27,7 +27,7 @@ func TestUserRequestValidateMissingParam(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "Missing FName",
+			name: "Missing Fname",
 			request: UserRequest{
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
@@ -39,7 +39,7 @@ func TestUserRequestValidateMissingParam(t *testing.T) {
 		{
 			name: "Missing multiple fields",
 			request: UserRequest{
-				FName: utils.StrPtr("John"),
+				Fname: utils.StrPtr("John"),
 			},
 			wantErr: errors.MissingParams{Params: []string{"city", "phone", "height", "married"}},
 		},
@@ -53,7 +53,7 @@ func TestUserRequestValidateMissingParam(t *testing.T) {
 	}
 }
 
-func TestUserRequestValidateInvalidParam(t *testing.T) {
+func Test_UserRequestValidateInvalidParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserRequest
@@ -62,7 +62,7 @@ func TestUserRequestValidateInvalidParam(t *testing.T) {
 		{
 			name: "All fields valid",
 			request: UserRequest{
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(5.9),
@@ -73,7 +73,7 @@ func TestUserRequestValidateInvalidParam(t *testing.T) {
 		{
 			name: "Invalid Phone",
 			request: UserRequest{
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("123"),
 				Height:  utils.Float64Ptr(5.9),
@@ -84,7 +84,7 @@ func TestUserRequestValidateInvalidParam(t *testing.T) {
 		{
 			name: "Invalid Height",
 			request: UserRequest{
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(-1.0),
@@ -95,7 +95,7 @@ func TestUserRequestValidateInvalidParam(t *testing.T) {
 		{
 			name: "Invalid Phone and Height",
 			request: UserRequest{
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("123"),
 				Height:  utils.Float64Ptr(-1.0),
@@ -113,7 +113,7 @@ func TestUserRequestValidateInvalidParam(t *testing.T) {
 	}
 }
 
-func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
+func Test_UserUpdateRequestValidateMissingParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserUpdateRequest
@@ -123,7 +123,7 @@ func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
 			name: "All fields present",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(5.9),
@@ -132,7 +132,7 @@ func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "Missing FName",
+			name: "Missing Fname",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
 				City:    utils.StrPtr("New York"),
@@ -146,7 +146,7 @@ func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
 			name: "Missing multiple fields",
 			request: UserUpdateRequest{
 				ID:    utils.IntPtr(1),
-				FName: utils.StrPtr("John"),
+				Fname: utils.StrPtr("John"),
 			},
 			wantErr: errors.MissingParams{Params: []string{"city", "phone", "height", "married"}},
 		},
@@ -160,7 +160,7 @@ func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
 	}
 }
 
-func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
+func Test_UserUpdateRequestValidateInvalidParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserUpdateRequest
@@ -170,7 +170,7 @@ func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
 			name: "All fields valid",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(5.9),
@@ -182,7 +182,7 @@ func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
 			name: "Invalid ID",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(0),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(5.9),
@@ -194,7 +194,7 @@ func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
 			name: "Invalid Phone",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("123"),
 				Height:  utils.Float64Ptr(5.9),
@@ -206,7 +206,7 @@ func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
 			name: "Invalid Height",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("1234567890"),
 				Height:  utils.Float64Ptr(-1.0),
@@ -218,7 +218,7 @@ func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
 			name: "Invalid Phone and Height",
 			request: UserUpdateRequest{
 				ID:      utils.IntPtr(1),
-				FName:   utils.StrPtr("John"),
+				Fname:   utils.StrPtr("John"),
 				City:    utils.StrPtr("New York"),
 				Phone:   utils.StrPtr("123"),
 				Height:  utils.Float64Ptr(-1.0),

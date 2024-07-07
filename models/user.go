@@ -4,7 +4,7 @@ import "github.com/ssshekhu53/user-detail-management/errors"
 
 type User struct {
 	ID      int     `json:"id"`
-	FName   string  `json:"fname"`
+	Fname   string  `json:"fname"`
 	City    string  `json:"city"`
 	Phone   string  `json:"phone"`
 	Height  float64 `json:"height"`
@@ -12,7 +12,7 @@ type User struct {
 }
 
 type UserRequest struct {
-	FName   *string  `json:"fname"`
+	Fname   *string  `json:"fname"`
 	City    *string  `json:"city"`
 	Phone   *string  `json:"phone"`
 	Height  *float64 `json:"height"`
@@ -22,7 +22,7 @@ type UserRequest struct {
 func (u UserRequest) ValidateMissingParam() error {
 	var missing []string
 
-	if u.FName == nil {
+	if u.Fname == nil {
 		missing = append(missing, "fname")
 	}
 
@@ -69,7 +69,7 @@ func (u UserRequest) ValidateInvalidParam() error {
 
 type UserUpdateRequest struct {
 	ID      *int     `json:"id"`
-	FName   *string  `json:"fname"`
+	Fname   *string  `json:"fname"`
 	City    *string  `json:"city"`
 	Phone   *string  `json:"phone"`
 	Height  *float64 `json:"height"`
@@ -83,7 +83,7 @@ func (u UserUpdateRequest) ValidateMissingParam() error {
 		missing = append(missing, "id")
 	}
 
-	if u.FName == nil {
+	if u.Fname == nil {
 		missing = append(missing, "fname")
 	}
 
