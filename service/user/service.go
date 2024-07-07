@@ -51,6 +51,12 @@ func (u *user) GetByID(id int) (*models.User, error) {
 	return usr, nil
 }
 
+func (u *user) GetByIDs(ids []int) []models.User {
+	users := u.userStore.GetByIDs(ids)
+
+	return users
+}
+
 func (u *user) Update(usr *models.UserUpdateRequest) (*models.User, error) {
 	existingUser, err := u.userStore.GetByID(*usr.ID)
 	if err != nil {

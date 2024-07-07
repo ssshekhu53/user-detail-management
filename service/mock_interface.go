@@ -97,6 +97,20 @@ func (mr *MockUserMockRecorder) GetByID(arg0 any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockUser)(nil).GetByID), arg0)
 }
 
+// GetByIDs mocks base method.
+func (m *MockUser) GetByIDs(ids []int) []models.User {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByIDs", ids)
+	ret0, _ := ret[0].([]models.User)
+	return ret0
+}
+
+// GetByIDs indicates an expected call of GetByIDs.
+func (mr *MockUserMockRecorder) GetByIDs(ids any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByIDs", reflect.TypeOf((*MockUser)(nil).GetByIDs), ids)
+}
+
 // Search mocks base method.
 func (m *MockUser) Search(filters *models.Filters) []models.User {
 	m.ctrl.T.Helper()

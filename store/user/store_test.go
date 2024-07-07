@@ -73,6 +73,32 @@ func Test_GetByID(t *testing.T) {
 	assert.IsType(t, errors.UserNotFound{}, err)
 }
 
+func Test_GetByIDs(t *testing.T) {
+	u := New().(*user)
+	userReq1 := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}
+	userReq2 := &models.User{Fname: "Jane", City: "San Francisco", Phone: "0987654321", Height: 5.5, Married: true}
+
+	u.Create(userReq1)
+	u.Create(userReq2)
+
+	tests := []struct {
+		name string
+		ids  []int
+		want []models.User
+	}{
+		{"Users exists", []int{1, 2}, []models.User{u.users[1], u.users[2]}},
+		{"No users exists", []int{3, 4}, []models.User{}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			users := u.GetByIDs(tt.ids)
+
+			assert.ElementsMatch(t, tt.want, users)
+		})
+	}
+}
+
 func Test_Update(t *testing.T) {
 	u := New().(*user)
 	usrCreateReq := &models.User{Fname: "John", City: "New York", Phone: "1234567890", Height: 5.9, Married: false}

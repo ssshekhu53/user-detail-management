@@ -203,6 +203,52 @@ func Test_GetByID(t *testing.T) {
 	}
 }
 
+func Test_GetByIDs(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockStore := store.NewMockUser(ctrl)
+	service := New(mockStore)
+
+	ids := []int{1, 2}
+
+	tests := []struct {
+		name          string
+		mockSetup     func()
+		expectedUsers []models.User
+	}{
+		{
+			"Get all users",
+			func() {
+				mockStore.EXPECT().GetByIDs(ids).Return([]models.User{
+					{ID: 1, Fname: "John", City: "New York", Phone: "1234567890", Height: 180, Married: false},
+					{ID: 2, Fname: "Jane", City: "Los Angeles", Phone: "0987654321", Height: 160, Married: true},
+				})
+			},
+			[]models.User{
+				{ID: 1, Fname: "John", City: "New York", Phone: "1234567890", Height: 180, Married: false},
+				{ID: 2, Fname: "Jane", City: "Los Angeles", Phone: "0987654321", Height: 160, Married: true},
+			},
+		},
+		{
+			"No users found",
+			func() {
+				mockStore.EXPECT().GetByIDs(ids).Return([]models.User{})
+			},
+			[]models.User{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockSetup()
+
+			users := service.GetByIDs(ids)
+			assert.Equal(t, tt.expectedUsers, users)
+		})
+	}
+}
+
 func Test_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()

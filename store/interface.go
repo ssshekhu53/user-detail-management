@@ -8,6 +8,7 @@ type User interface {
 	Create(user *models.User) int
 	Get(filters *models.Filters) []models.User
 	GetByID(id int) (*models.User, error)
+	GetByIDs(ids []int) []models.User
 	Update(user *models.User)
 	Delete(id int)
 }

@@ -56,6 +56,28 @@ func (u *user) GetByID(id int) (*models.User, error) {
 	return nil, errors.UserNotFound{ID: id}
 }
 
+func (u *user) GetByIDs(ids []int) []models.User {
+	users := make([]models.User, 0)
+
+	idsMap := make(map[int]bool)
+
+	for _, id := range ids {
+		idsMap[id] = true
+	}
+
+	for _, usr := range u.users {
+		if _, ok := idsMap[usr.ID]; ok {
+			users = append(users, usr)
+		}
+	}
+
+	sort.Slice(users, func(i, j int) bool {
+		return users[i].ID < users[j].ID
+	})
+
+	return users
+}
+
 func (u *user) Update(usr *models.User) {
 	u.users[usr.ID] = *usr
 }
