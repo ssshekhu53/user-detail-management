@@ -1,13 +1,13 @@
 package user
 
 import (
-	"github.com/ssshekhu53/user-detail-management/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/ssshekhu53/user-detail-management/errors"
 	"github.com/ssshekhu53/user-detail-management/models"
+	"github.com/ssshekhu53/user-detail-management/utils"
 )
 
 func TestCreate(t *testing.T) {
