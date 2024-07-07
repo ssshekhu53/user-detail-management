@@ -61,8 +61,15 @@ func (u *user) GetByID(id int) (*models.User, error) {
 	return nil, errors.UserNotFound{ID: id}
 }
 
-func (u *user) Update(user *models.User) {
-	u.users[user.ID] = *user
+func (u *user) Update(usr *models.UserUpdateRequest) {
+	u.users[*usr.ID] = models.User{
+		ID:      *usr.ID,
+		FName:   *usr.FName,
+		City:    *usr.City,
+		Phone:   *usr.Phone,
+		Height:  *usr.Height,
+		Married: *usr.Married,
+	}
 }
 
 func (u *user) Delete(id int) {

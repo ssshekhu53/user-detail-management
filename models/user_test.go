@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/ssshekhu53/user-detail-management/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,7 +9,7 @@ import (
 	"github.com/ssshekhu53/user-detail-management/errors"
 )
 
-func TestValidateMissingParam(t *testing.T) {
+func TestUserRequestValidateMissingParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserRequest
@@ -17,28 +18,28 @@ func TestValidateMissingParam(t *testing.T) {
 		{
 			name: "All fields present",
 			request: UserRequest{
-				FName:   strPtr("John"),
-				City:    strPtr("New York"),
-				Phone:   strPtr("1234567890"),
-				Height:  float64Ptr(5.9),
-				Married: boolPtr(true),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: nil,
 		},
 		{
 			name: "Missing FName",
 			request: UserRequest{
-				City:    strPtr("New York"),
-				Phone:   strPtr("1234567890"),
-				Height:  float64Ptr(5.9),
-				Married: boolPtr(true),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: errors.MissingParams{Params: []string{"fname"}},
 		},
 		{
 			name: "Missing multiple fields",
 			request: UserRequest{
-				FName: strPtr("John"),
+				FName: utils.StrPtr("John"),
 			},
 			wantErr: errors.MissingParams{Params: []string{"city", "phone", "height", "married"}},
 		},
@@ -52,7 +53,7 @@ func TestValidateMissingParam(t *testing.T) {
 	}
 }
 
-func TestValidateInvalidParam(t *testing.T) {
+func TestUserRequestValidateInvalidParam(t *testing.T) {
 	tests := []struct {
 		name    string
 		request UserRequest
@@ -61,44 +62,44 @@ func TestValidateInvalidParam(t *testing.T) {
 		{
 			name: "All fields valid",
 			request: UserRequest{
-				FName:   strPtr("John"),
-				City:    strPtr("New York"),
-				Phone:   strPtr("1234567890"),
-				Height:  float64Ptr(5.9),
-				Married: boolPtr(true),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: nil,
 		},
 		{
 			name: "Invalid Phone",
 			request: UserRequest{
-				FName:   strPtr("John"),
-				City:    strPtr("New York"),
-				Phone:   strPtr("123"),
-				Height:  float64Ptr(5.9),
-				Married: boolPtr(true),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("123"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: errors.InvalidParams{Params: []string{"phone"}},
 		},
 		{
 			name: "Invalid Height",
 			request: UserRequest{
-				FName:   strPtr("John"),
-				City:    strPtr("New York"),
-				Phone:   strPtr("1234567890"),
-				Height:  float64Ptr(-1.0),
-				Married: boolPtr(true),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(-1.0),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: errors.InvalidParams{Params: []string{"height"}},
 		},
 		{
 			name: "Invalid Phone and Height",
 			request: UserRequest{
-				FName:   strPtr("John"),
-				City:    strPtr("New York"),
-				Phone:   strPtr("123"),
-				Height:  float64Ptr(-1.0),
-				Married: boolPtr(true),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("123"),
+				Height:  utils.Float64Ptr(-1.0),
+				Married: utils.BoolPtr(true),
 			},
 			wantErr: errors.InvalidParams{Params: []string{"phone", "height"}},
 		},
@@ -112,15 +113,125 @@ func TestValidateInvalidParam(t *testing.T) {
 	}
 }
 
-// Helper functions to create pointers from literals
-func strPtr(s string) *string {
-	return &s
+func TestUserUpdateRequestValidateMissingParam(t *testing.T) {
+	tests := []struct {
+		name    string
+		request UserUpdateRequest
+		wantErr error
+	}{
+		{
+			name: "All fields present",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "Missing FName",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: errors.MissingParams{Params: []string{"fname"}},
+		},
+		{
+			name: "Missing multiple fields",
+			request: UserUpdateRequest{
+				ID:    utils.IntPtr(1),
+				FName: utils.StrPtr("John"),
+			},
+			wantErr: errors.MissingParams{Params: []string{"city", "phone", "height", "married"}},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.ValidateMissingParam()
+			assert.Equal(t, tt.wantErr, err)
+		})
+	}
 }
 
-func float64Ptr(f float64) *float64 {
-	return &f
-}
+func TestUserUpdateRequestValidateInvalidParam(t *testing.T) {
+	tests := []struct {
+		name    string
+		request UserUpdateRequest
+		wantErr error
+	}{
+		{
+			name: "All fields valid",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "Invalid ID",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(0),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: errors.InvalidParams{Params: []string{"id"}},
+		},
+		{
+			name: "Invalid Phone",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("123"),
+				Height:  utils.Float64Ptr(5.9),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: errors.InvalidParams{Params: []string{"phone"}},
+		},
+		{
+			name: "Invalid Height",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("1234567890"),
+				Height:  utils.Float64Ptr(-1.0),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: errors.InvalidParams{Params: []string{"height"}},
+		},
+		{
+			name: "Invalid Phone and Height",
+			request: UserUpdateRequest{
+				ID:      utils.IntPtr(1),
+				FName:   utils.StrPtr("John"),
+				City:    utils.StrPtr("New York"),
+				Phone:   utils.StrPtr("123"),
+				Height:  utils.Float64Ptr(-1.0),
+				Married: utils.BoolPtr(true),
+			},
+			wantErr: errors.InvalidParams{Params: []string{"phone", "height"}},
+		},
+	}
 
-func boolPtr(b bool) *bool {
-	return &b
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.ValidateInvalidParam()
+			assert.Equal(t, tt.wantErr, err)
+		})
+	}
 }

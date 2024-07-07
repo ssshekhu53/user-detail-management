@@ -6,6 +6,6 @@ type User interface {
 	Create(*models.UserRequest) int
 	Get(filters *models.Filters) []models.User
 	GetByID(int) (*models.User, error)
-	Update(*models.User)
+	Update(request *models.UserUpdateRequest)
 	Delete(int)
 }

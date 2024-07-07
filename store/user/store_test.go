@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/ssshekhu53/user-detail-management/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,11 +14,11 @@ func TestCreate(t *testing.T) {
 	u := New().(*user)
 
 	userReq := &models.UserRequest{
-		FName:   strPtr("John"),
-		City:    strPtr("New York"),
-		Phone:   strPtr("1234567890"),
-		Height:  float64Ptr(5.9),
-		Married: boolPtr(false),
+		FName:   utils.StrPtr("John"),
+		City:    utils.StrPtr("New York"),
+		Phone:   utils.StrPtr("1234567890"),
+		Height:  utils.Float64Ptr(5.9),
+		Married: utils.BoolPtr(false),
 	}
 
 	id := u.Create(userReq)
@@ -32,8 +33,8 @@ func TestCreate(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	u := New().(*user)
-	userReq1 := &models.UserRequest{FName: strPtr("John"), City: strPtr("New York"), Phone: strPtr("1234567890"), Height: float64Ptr(5.9), Married: boolPtr(false)}
-	userReq2 := &models.UserRequest{FName: strPtr("Jane"), City: strPtr("San Francisco"), Phone: strPtr("0987654321"), Height: float64Ptr(5.5), Married: boolPtr(true)}
+	userReq1 := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
+	userReq2 := &models.UserRequest{FName: utils.StrPtr("Jane"), City: utils.StrPtr("San Francisco"), Phone: utils.StrPtr("0987654321"), Height: utils.Float64Ptr(5.5), Married: utils.BoolPtr(true)}
 
 	u.Create(userReq1)
 	u.Create(userReq2)
@@ -44,8 +45,8 @@ func TestGet(t *testing.T) {
 		want    []models.User
 	}{
 		{"Get all users", nil, []models.User{u.users[1], u.users[2]}},
-		{"Filter by City", &models.Filters{City: strPtr("New York")}, []models.User{u.users[1]}},
-		{"Filter by Married status", &models.Filters{Married: boolPtr(true)}, []models.User{u.users[2]}},
+		{"Filter by City", &models.Filters{City: utils.StrPtr("New York")}, []models.User{u.users[1]}},
+		{"Filter by Married status", &models.Filters{Married: utils.BoolPtr(true)}, []models.User{u.users[2]}},
 	}
 
 	for _, tt := range tests {
@@ -59,7 +60,7 @@ func TestGet(t *testing.T) {
 
 func TestGetByID(t *testing.T) {
 	u := New().(*user)
-	userReq := &models.UserRequest{FName: strPtr("John"), City: strPtr("New York"), Phone: strPtr("1234567890"), Height: float64Ptr(5.9), Married: boolPtr(false)}
+	userReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
 	id := u.Create(userReq)
 
 	usr, err := u.GetByID(id)
@@ -74,11 +75,13 @@ func TestGetByID(t *testing.T) {
 
 func TestUpdate(t *testing.T) {
 	u := New().(*user)
-	userReq := &models.UserRequest{FName: strPtr("John"), City: strPtr("New York"), Phone: strPtr("1234567890"), Height: float64Ptr(5.9), Married: boolPtr(false)}
-	id := u.Create(userReq)
+	usrCreateReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
+	id := u.Create(usrCreateReq)
+
+	usrUpdateReq := &models.UserUpdateRequest{ID: utils.IntPtr(id), FName: utils.StrPtr("Johnny"), City: utils.StrPtr("Los Angeles"), Phone: utils.StrPtr("0987654321"), Height: utils.Float64Ptr(6.0), Married: utils.BoolPtr(true)}
 
 	updatedUser := &models.User{ID: id, FName: "Johnny", City: "Los Angeles", Phone: "0987654321", Height: 6.0, Married: true}
-	u.Update(updatedUser)
+	u.Update(usrUpdateReq)
 
 	usr := u.users[id]
 
@@ -87,7 +90,7 @@ func TestUpdate(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	u := New().(*user)
-	userReq := &models.UserRequest{FName: strPtr("John"), City: strPtr("New York"), Phone: strPtr("1234567890"), Height: float64Ptr(5.9), Married: boolPtr(false)}
+	userReq := &models.UserRequest{FName: utils.StrPtr("John"), City: utils.StrPtr("New York"), Phone: utils.StrPtr("1234567890"), Height: utils.Float64Ptr(5.9), Married: utils.BoolPtr(false)}
 	id := u.Create(userReq)
 
 	u.Delete(id)
@@ -107,14 +110,14 @@ func TestIsMatch(t *testing.T) {
 		filters *models.Filters
 		want    bool
 	}{
-		{"Match by FName", &models.Filters{Fname: strPtr("John")}, true},
-		{"Mismatch by FName", &models.Filters{Fname: strPtr("Jane")}, false},
-		{"Match by City", &models.Filters{City: strPtr("New York")}, true},
-		{"Mismatch by City", &models.Filters{City: strPtr("San Francisco")}, false},
-		{"Match by Height", &models.Filters{Height: float64Ptr(5.9)}, true},
-		{"Mismatch by Height", &models.Filters{Height: float64Ptr(6.0)}, false},
-		{"Match by Married status", &models.Filters{Married: boolPtr(false)}, true},
-		{"Mismatch by Married status", &models.Filters{Married: boolPtr(true)}, false},
+		{"Match by FName", &models.Filters{Fname: utils.StrPtr("John")}, true},
+		{"Mismatch by FName", &models.Filters{Fname: utils.StrPtr("Jane")}, false},
+		{"Match by City", &models.Filters{City: utils.StrPtr("New York")}, true},
+		{"Mismatch by City", &models.Filters{City: utils.StrPtr("San Francisco")}, false},
+		{"Match by Height", &models.Filters{Height: utils.Float64Ptr(5.9)}, true},
+		{"Mismatch by Height", &models.Filters{Height: utils.Float64Ptr(6.0)}, false},
+		{"Match by Married status", &models.Filters{Married: utils.BoolPtr(false)}, true},
+		{"Mismatch by Married status", &models.Filters{Married: utils.BoolPtr(true)}, false},
 	}
 
 	for _, tt := range tests {
@@ -124,17 +127,4 @@ func TestIsMatch(t *testing.T) {
 			assert.Equal(t, tt.want, got)
 		})
 	}
-}
-
-// Helper functions to create pointers for primitive types
-func strPtr(s string) *string {
-	return &s
-}
-
-func float64Ptr(f float64) *float64 {
-	return &f
-}
-
-func boolPtr(b bool) *bool {
-	return &b
 }
