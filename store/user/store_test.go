@@ -22,7 +22,7 @@ func TestCreate(t *testing.T) {
 
 	id := u.Create(userReq)
 
-	assert.Equal(t, int64(1), id)
+	assert.Equal(t, int(1), id)
 	assert.Equal(t, u.users[id].FName, *userReq.FName)
 	assert.Equal(t, u.users[id].City, *userReq.City)
 	assert.Equal(t, u.users[id].Phone, *userReq.Phone)

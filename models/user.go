@@ -3,7 +3,7 @@ package models
 import "github.com/ssshekhu53/user-detail-management/errors"
 
 type User struct {
-	ID      int64   `json:"id"`
+	ID      int     `json:"id"`
 	FName   string  `json:"fname"`
 	City    string  `json:"city"`
 	Phone   string  `json:"phone"`

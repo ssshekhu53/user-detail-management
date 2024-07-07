@@ -10,19 +10,19 @@ import (
 )
 
 type user struct {
-	users          map[int64]models.User
-	lastInsertedID int64
+	users          map[int]models.User
+	lastInsertedID int
 }
 
 func New() store.User {
 	u := &user{}
-	u.users = make(map[int64]models.User)
+	u.users = make(map[int]models.User)
 	u.lastInsertedID = 0
 
 	return u
 }
 
-func (u *user) Create(userReq *models.UserRequest) int64 {
+func (u *user) Create(userReq *models.UserRequest) int {
 	u.lastInsertedID += 1
 
 	u.users[u.lastInsertedID] = models.User{
@@ -53,7 +53,7 @@ func (u *user) Get(filters *models.Filters) []models.User {
 	return users
 }
 
-func (u *user) GetByID(id int64) (*models.User, error) {
+func (u *user) GetByID(id int) (*models.User, error) {
 	if usr, ok := u.users[id]; ok {
 		return &usr, nil
 	}
@@ -65,7 +65,7 @@ func (u *user) Update(user *models.User) {
 	u.users[user.ID] = *user
 }
 
-func (u *user) Delete(id int64) {
+func (u *user) Delete(id int) {
 	delete(u.users, id)
 }
 
