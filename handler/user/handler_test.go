@@ -425,6 +425,12 @@ func Test_Delete(t *testing.T) {
 				// No mock expected as it should fail before calling the service
 			}, status.Error(codes.InvalidArgument, "invalid param: id"),
 		},
+		{
+			"not found", 1,
+			func() {
+				mockService.EXPECT().Delete(1).Return(errors.UserNotFound{ID: 1})
+			}, status.Error(codes.NotFound, "user with ID 1 not found"),
+		},
 	}
 
 	for _, tt := range tests {

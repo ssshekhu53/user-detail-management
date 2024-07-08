@@ -126,7 +126,10 @@ func (u *user) Delete(_ context.Context, userID *grpc.UserID) (*emptypb.Empty, e
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	u.userService.Delete(id)
+	err := u.userService.Delete(id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
 
 	return nil, nil
 }
