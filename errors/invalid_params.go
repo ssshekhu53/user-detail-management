@@ -16,17 +16,17 @@ func (i InvalidParams) Error() string {
 
 	switch len(i.Params) {
 	case 0:
-		msg = fmt.Sprintf("Invalid Params")
+		msg = fmt.Sprintf("invalid params")
 
 		break
 
 	case 1:
-		msg = fmt.Sprintf("Invalid Param: %s", params)
+		msg = fmt.Sprintf("invalid param: %s", params)
 
 		break
 
 	default:
-		msg = fmt.Sprintf("Invalid Params: %s", params)
+		msg = fmt.Sprintf("invalid params: %s", params)
 	}
 
 	return msg

@@ -15,17 +15,17 @@ func TestMissingParamsError(t *testing.T) {
 		{
 			name:    "No missing params",
 			params:  []string{},
-			wantErr: "Missing Params",
+			wantErr: "missing params",
 		},
 		{
 			name:    "One missing param",
 			params:  []string{"phone"},
-			wantErr: "Missing Param: phone",
+			wantErr: "missing param: phone",
 		},
 		{
 			name:    "Multiple missing params",
 			params:  []string{"phone", "height"},
-			wantErr: "Missing Params: phone, height",
+			wantErr: "missing params: phone, height",
 		},
 	}
 

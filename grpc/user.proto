@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "/grpc";
+
+// Define the User message
+message User {
+  int32 id = 1;
+  string fname = 2;
+  string city = 3;
+  string phone = 4;
+  double height = 5;
+  bool married = 6;
+}
+
+// Define the UserRequest message
+message UserRequest {
+  string fname = 1;
+  string city = 2;
+  string phone = 3;
+  double height = 4;
+  bool married = 5;
+}
+
+// Define the UserUpdateRequest message
+message UserUpdateRequest {
+  int32 id = 1;
+  string fname = 2;
+  string city = 3;
+  string phone = 4;
+  double height = 5;
+  bool married = 6;
+}
+
+// Define the Filters message
+message Filters {
+  string fname = 1;
+  string city = 2;
+  string phone = 3;
+  double height = 4;
+  bool married = 5;
+}
+
+// Define the UserID message for requests that need a user ID
+message UserID {
+  int32 id = 1;
+}
+
+// Define the UserIDs message for requests that need multiple user IDs
+message UserIDs {
+  repeated int32 ids = 1;
+}
+
+// Define the Users response message
+message Users {
+  repeated User users = 1;
+}
+
+// Define the service interface
+service UserService {
+  rpc Create(UserRequest) returns (User);
+  rpc Get(google.protobuf.Empty) returns (Users);
+  rpc GetByID(UserID) returns (User);
+  rpc GetByIDs(UserIDs) returns (Users);
+  rpc Update(UserUpdateRequest) returns (User);
+  rpc Delete(UserID) returns (google.protobuf.Empty);
+  rpc Search(Filters) returns (Users);
+}

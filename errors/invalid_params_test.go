@@ -15,17 +15,17 @@ func TestInvalidParamsError(t *testing.T) {
 		{
 			name:    "No invalid params",
 			params:  []string{},
-			wantErr: "Invalid Params",
+			wantErr: "invalid params",
 		},
 		{
 			name:    "One invalid param",
 			params:  []string{"phone"},
-			wantErr: "Invalid Param: phone",
+			wantErr: "invalid param: phone",
 		},
 		{
 			name:    "Multiple invalid params",
 			params:  []string{"phone", "height"},
-			wantErr: "Invalid Params: phone, height",
+			wantErr: "invalid params: phone, height",
 		},
 	}
 

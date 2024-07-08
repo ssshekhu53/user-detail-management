@@ -16,17 +16,17 @@ func (m MissingParams) Error() string {
 
 	switch len(m.Params) {
 	case 0:
-		msg = fmt.Sprintf("Missing Params")
+		msg = fmt.Sprintf("missing params")
 
 		break
 
 	case 1:
-		msg = fmt.Sprintf("Missing Param: %s", params)
+		msg = fmt.Sprintf("missing param: %s", params)
 
 		break
 
 	default:
-		msg = fmt.Sprintf("Missing Params: %s", params)
+		msg = fmt.Sprintf("missing params: %s", params)
 	}
 
 	return msg
