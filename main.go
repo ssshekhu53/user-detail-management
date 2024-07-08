@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/ssshekhu53/user-detail-management/interceptor"
 	"log"
 	"net"
 	"os"
@@ -16,6 +17,8 @@ import (
 )
 
 func main() {
+	logger := log.New(os.Stdout, "user-detail-management ", log.Ldate|log.Ltime)
+
 	grpcPortEnv := os.Getenv("GRPC_PORT")
 
 	_, err := strconv.Atoi(grpcPortEnv)
@@ -27,19 +30,21 @@ func main() {
 
 	lis, err := net.Listen("tcp", grpcPort)
 	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
+		logger.Fatalf("Failed to listen: %v", err)
 	}
 
 	userStore := storeUser.New()
 	userSvc := serviceUser.New(userStore)
 	userHandler := handlerUser.New(userSvc)
 
-	s := grpc.NewServer()
+	loggingInterceptor := interceptor.NewLoggingInterceptor(logger)
+
+	s := grpc.NewServer(grpc.UnaryInterceptor(loggingInterceptor.UnaryLoggingInterceptor))
 
 	pb.RegisterUserServiceServer(s, userHandler)
 
-	log.Printf("Starting gRPC server on port %s", grpcPort)
+	logger.Printf("Starting gRPC server on port %s", grpcPort)
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve: %v", err)
+		logger.Fatalf("Failed to serve: %v", err)
 	}
 }
