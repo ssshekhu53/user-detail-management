@@ -99,9 +99,5 @@ func (u *user) isMatch(usr *models.User, filters *models.Filters) bool {
 		return false
 	}
 
-	if filters.Married != nil && usr.Married != *filters.Married {
-		return false
-	}
-
 	return true
 }

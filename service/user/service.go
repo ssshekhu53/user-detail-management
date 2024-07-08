@@ -16,7 +16,7 @@ func New(userStore store.User) service.User {
 }
 
 func (u *user) Create(usr *models.UserRequest) (*models.User, error) {
-	existingUsers := u.Search(&models.Filters{Fname: usr.Fname, City: usr.City, Phone: usr.Phone, Height: usr.Height, Married: usr.Married})
+	existingUsers := u.Search(&models.Filters{Fname: usr.Fname, City: usr.City, Phone: usr.Phone, Height: usr.Height})
 	if len(existingUsers) != 0 {
 		return nil, errors.UserAlreadyExists{}
 	}

@@ -36,11 +36,10 @@ func Test_Create(t *testing.T) {
 	}
 
 	sampleFilter := &models.Filters{
-		Fname:   sampleUserReq.Fname,
-		City:    sampleUserReq.City,
-		Phone:   sampleUserReq.Phone,
-		Height:  sampleUserReq.Height,
-		Married: sampleUserReq.Married,
+		Fname:  sampleUserReq.Fname,
+		City:   sampleUserReq.City,
+		Phone:  sampleUserReq.Phone,
+		Height: sampleUserReq.Height,
 	}
 
 	tests := []struct {

@@ -178,11 +178,10 @@ func (u *user) validateIDs(ids []int32) ([]int, error) {
 
 func (u *user) grpcFiltersToFilters(filters *grpc.Filters) *models.Filters {
 	return &models.Filters{
-		Fname:   utils.StrPtr(filters.Fname),
-		City:    utils.StrPtr(filters.City),
-		Phone:   utils.StrPtr(filters.Phone),
-		Height:  utils.Float64Ptr(filters.Height),
-		Married: utils.BoolPtr(filters.Married),
+		Fname:  utils.StrPtr(filters.Fname),
+		City:   utils.StrPtr(filters.City),
+		Phone:  utils.StrPtr(filters.Phone),
+		Height: utils.Float64Ptr(filters.Height),
 	}
 }
 

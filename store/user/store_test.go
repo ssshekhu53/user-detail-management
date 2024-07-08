@@ -46,7 +46,6 @@ func Test_Get(t *testing.T) {
 	}{
 		{"Get all users", nil, []models.User{u.users[1], u.users[2]}},
 		{"Filter by City", &models.Filters{City: utils.StrPtr("New York")}, []models.User{u.users[1]}},
-		{"Filter by Married status", &models.Filters{Married: utils.BoolPtr(true)}, []models.User{u.users[2]}},
 	}
 
 	for _, tt := range tests {
@@ -142,8 +141,6 @@ func Test_isMatch(t *testing.T) {
 		{"Mismatch by City", &models.Filters{City: utils.StrPtr("San Francisco")}, false},
 		{"Match by Height", &models.Filters{Height: utils.Float64Ptr(5.9)}, true},
 		{"Mismatch by Height", &models.Filters{Height: utils.Float64Ptr(6.0)}, false},
-		{"Match by Married status", &models.Filters{Married: utils.BoolPtr(false)}, true},
-		{"Mismatch by Married status", &models.Filters{Married: utils.BoolPtr(true)}, false},
 	}
 
 	for _, tt := range tests {
